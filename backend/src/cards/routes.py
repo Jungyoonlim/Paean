@@ -68,4 +68,45 @@ def createcards(deckId):
 @card_bp.route('/deck/<id>/update/<cardid>', methods = ['PATCH'])
 @cross_origin(supports_credentials=True)
 def update_card(id, cardid):
-    # Called when 
+    # Called when the user requests to update cards in a deck. 
+    try:
+        data = request.get_json()
+        deckid = id
+        cardid = cardid
+        word = data['word']
+        meaning = data['meaning']
+
+        db.child("card").order_by_child("Id").equal_to(f"{deckid}_{cardid}"),update({
+            "Id": f"{deckid}_{cardid}","deckid" : {deckid}, "word": word, "meaning": meaning
+        })
+
+        return jsonify(
+            message = 'Cards are updated successfully.',
+            status = 201
+        ), 201
+    except Exception as e:
+        return jsonify(
+            message = f'Card Update failed {e}',
+            status = 400
+        ), 400
+
+@card_bp.route('/deck/<id>/delete/<cardid>', methods = ['DELETE'])
+@cross_origin(supports_credentials=True)
+# called when the user requests to delete a card. The deck id and the card id are needed. 
+def delete_card(id,cardid):
+    try:
+        data = request.get_json()
+        deckid=id
+        cardid=cardid
+        
+        db.child("card").order_by_child("Id").equal_to(f"{deckid}_{cardid}").remove()
+
+        return jsonfiy(
+            message = 'Cards are deleted successfully.',
+            status = 200
+        ), 200
+    except:
+        return jsonify(
+            message = 'Card deletion failed.',
+            status = 400,
+        ), 400
