@@ -1,17 +1,35 @@
-from flask import Blueprint, jsonify
-from flask import current_app as app
-from flask_cors import cross_origin 
-from flask import request
+from flask import Blueprint, jsonify, request
+from flask_cors import cross_origin
 try:
     from .. import firebase
 except ImportError:
     from __init__ import firebase
 
-auth_bp = Blueprint(
-    'auth_bp', __name__
+deck_bp = Blueprint(
+    'deck_bp', __name__
 )
 
-auth = firebase.auth()
+db = firebase.database()
 
-@auth_bp.route('/', methods=['GET'])
+@deck_bp.route('/deck/<id>', methods = ['GET'])
 @cross_origin(supports_credentials=True)
+def get_deck(id):
+    # called when we want to fetch one of the decks, we pass deck id of this deck
+    try:
+        deck = db.child("deck").child(id).get()
+        return jsonify(
+            deck = deck.val(),
+            message = 'The deck is fetched successfully',
+            status = 200
+        ), 200
+    except Exception as e:
+        return jsonify(
+            decks = [],
+            message = f"An error occurred: {e}",
+            status = 400
+        ), 400
+
+@deck_bp.route('/deck/all', methods=['GET'])
+@cross_origin(supports_credentials=True)
+def get_decks():
+    # called when 
