@@ -15,7 +15,7 @@ const Footer = () => {
                         </div>
                     </div>
                     <div className='col-lg-6 footer-text-p text-right'>
-                        <span>Copyright©2023. All rights reserved.</span>
+                        <span>Copyright ©2023. All rights reserved.</span>
                     </div>
                 </div>
             </div>

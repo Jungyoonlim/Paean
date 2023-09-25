@@ -7,10 +7,11 @@ import "swiper/css/navigation";
 
 import "./styles.scss";
 
-import { Pagination, Navigation } from "swiper";
+import Pagination from "swiper";
+import Navigation from "swiper";
 import ReactCardFlip from "react-card-flip";
 import { useState } from "react";
-import { Card } from "antd";
+import { Card as AntdCard } from "antd";
 
 export default function Flashcard({cards}: any){
     return (
