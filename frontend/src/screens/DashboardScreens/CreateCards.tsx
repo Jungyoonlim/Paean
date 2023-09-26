@@ -45,10 +45,57 @@ const CreateCards = () => {
     const { id } = useParams();
     
     const fetchDeck = async () => {
-        
+        setFetchingDeck(true);
+        await http
+            .get(`/deck/${id}`)
+            .then((res) => {
+                const { deck: _deck } = res.data || {};
+                setDeck(_deck);
+                setFetchingDeck(false);
+            })
+            .catch((err) => {
+                setFetchingDeck(false);
+            });
     };
 
     const fetchCards = async () => {
+        setFetchingDeck(true);
+        await http
+            .get(`deck/${id}/card/all`)
+            .then((res) => {
+                const { cards } = res.data || {};
+                if (cards.length !== 0){
+                    setCards(cards);
+                }
+                setOriginalCards(cards);
+                setFetchingCards(false);
+            }) 
+            .catch((err) => {
+                setFetchingCards(false);
+            });
+    };
+
+    const handleUpdate = () => {
 
     };
-}
+
+    const addCard = () => {
+
+    };
+
+    const removeCard = () => {
+
+    };
+
+    const handleAddCards = async (e: any) => {
+
+    };
+
+    const { title } = deck || {};
+
+    return (
+
+    );
+};
+
+export default CreateCards; 
