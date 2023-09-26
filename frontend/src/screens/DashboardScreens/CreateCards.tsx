@@ -32,6 +32,23 @@ const CreateCards = () => {
     const [originalCards, setOriginalCards] = useState([]);
     const [fetchingDeck, setFetchingDeck] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [fetchingCards, setFetchingCards] = useState(false);
 
-    // more on Sep 25-
+    const flashcardUser = window.localStorage.getItem("flashcardUser");
+    const { localId } = (flashcardUser && JSON.parse(flashcardUser)) || {};
+
+    useEffect(() => {
+        fetchDeck();
+        fetchCards();
+    }, []);
+
+    const { id } = useParams();
+    
+    const fetchDeck = async () => {
+        
+    };
+
+    const fetchCards = async () => {
+
+    };
 }
