@@ -75,20 +75,51 @@ const CreateCards = () => {
             });
     };
 
-    const handleUpdate = () => {
-
+    const handleUpdate = (index: number, propertyName: string, e: any) => {
+        e.preventDefault();
+        const value = e.target.value;
+        const _cards: Card[] = [...cards];
+        const updatedCards = _cards.map((item, key) => {
+          if (index === key) {
+            return { ...item, [propertyName]: value };
+          }
+          return item;
+        });
+        setCards(updatedCards);
     };
 
     const addCard = () => {
-
+        const _cards = [...cards];
+        _cards.push(emptyCard);
+        setCards(_cards);
     };
 
-    const removeCard = () => {
-
+    const removeCard = (index: number) => {
+        const _cards = [...cards];
+        _cards.splice(index, 1);
+        setCards(_cards);
     };
 
     const handleAddCards = async (e: any) => {
-
+       e.preventDefault();
+       const payload = {
+        localId,
+        cards,
+       };
+       setIsSubmitting(true);
+       await http
+        .post('/deck/${id}/card/create', payload)
+        .then((res) => {
+            Swal.fire({
+                icon: "success",
+                title: "Cards added successfully!",
+                text: "You have successfully added cards to this deck.",
+                confirmButtonColor: "#221daf",
+            });
+        })
+        .catch((err) => {
+            setIsSubmitting(false);
+        });
     };
 
     const { title } = deck || {};
